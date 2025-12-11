@@ -36,13 +36,12 @@
             z-index: 5;
         }
 
-        /* --- CÂY THÔNG (Đã bỏ hiệu ứng bóng vàng) --- */
+        /* --- CÂY THÔNG --- */
         svg.mainSVG { 
             width: 85vmin; 
             height: 85vmin; 
             max-width: 800px; 
             max-height: 800px;
-            /* filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));  <- ĐÃ BỎ DÒNG NÀY */
             margin-top: 10vh; 
         }
 
@@ -68,7 +67,7 @@
         }
         @keyframes fadeInGlow { from { opacity: 0; transform: translateX(-50%) scale(0.8); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
 
-        /* --- ÔNG GIÀ NOEL (Dùng thẻ IMG) --- */
+        /* --- ÔNG GIÀ NOEL --- */
         .santa-claus { 
             position: absolute; 
             bottom: 5%; 
@@ -86,6 +85,133 @@
             from { opacity: 0; transform: scale(0) rotate(-20deg); } 
             to { opacity: 1; transform: scale(1) rotate(0deg); } 
         }
+
+        /* --- HỘP QUÀ BÍ MẬT (ĐÃ DI CHUYỂN RA GÓC TRÁI) --- */
+        .gift-container {
+            position: absolute;
+            bottom: 5%;  /* Sát đáy */
+            left: 5%;    /* Sát góc trái */
+            /* transform: translateX(-50%); <- Đã xóa dòng này */
+            z-index: 30;
+            cursor: pointer;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            animation: bounce 2s infinite; 
+        }
+
+        .gift-body {
+            width: 60px;
+            height: 50px;
+            background-color: #d63031; 
+            border-radius: 0 0 5px 5px;
+            position: absolute;
+            bottom: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .gift-body::before { 
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 100%;
+            background-color: #fdcb6e; 
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gift-lid {
+            width: 70px;
+            height: 18px;
+            background-color: #d63031;
+            position: absolute;
+            top: -8px;
+            left: -5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .gift-lid::before { 
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 100%;
+            background-color: #fdcb6e;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Dòng chữ "Tặng em!" */
+        .click-me {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 14px;
+            white-space: nowrap;
+            font-family: 'Dancing Script', cursive;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            animation: fadeText 1s infinite alternate;
+        }
+
+        /* Lời chúc ẩn bên trong */
+        .gift-message {
+            position: absolute;
+            bottom: 70px; 
+            left: 0; /* Căn trái cho thông điệp */
+            /* transform: translateX(-50%) scale(0); <- Đã sửa */
+            transform: scale(0);
+            transform-origin: bottom left; /* Mở từ góc dưới trái */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: #d63031;
+            font-family: 'Great Vibes', cursive;
+            font-size: 28px;
+            text-align: center;
+            width: max-content;
+            min-width: 200px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+            opacity: 0;
+            pointer-events: none;
+            border: 2px solid #fdcb6e;
+        }
+
+        /* --- TRẠNG THÁI KHI MỞ QUÀ --- */
+        .gift-container.open .gift-lid {
+            transform: translateY(-60px) rotate(-20deg); 
+            opacity: 0;
+        }
+
+        .gift-container.open .gift-message {
+            /* transform: translateX(-50%) scale(1); <- Đã sửa */
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .gift-container.open .gift-box {
+            animation: none; 
+        }
+
+        .gift-container.open .click-me {
+            display: none; 
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes fadeText { from { opacity: 0.6; transform: translateX(-50%) translateY(0); } to { opacity: 1; transform: translateX(-50%) translateY(-5px); } }
+
 
         /* --- NÚT NHẠC --- */
         .music-control { 
@@ -155,6 +281,18 @@
         <h1 class="text">Merry Christmas! 🎄</h1>
 
         <img class="santa-claus" src="https://media.giphy.com/media/yHZXogzGqe4sJjF65p/giphy.gif" alt="Ông già Noel cưỡi xe">
+
+        <div class="gift-container" onclick="openGift()">
+            <div class="gift-box">
+                <div class="click-me">👇 Tặng em!</div> 
+                <div class="gift-lid"></div>
+                <div class="gift-body"></div>
+            </div>
+            <div class="gift-message" id="message">
+                Chúc em một mùa Giáng Sinh<br>ấm áp và hạnh phúc! ❤️<br>
+                <span style="font-size: 20px; color: #555;">(Luôn vui vẻ nha!)</span>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
@@ -164,6 +302,22 @@
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/EasePack3.min.js"></script>
 
     <script>
+        // ===== XỬ LÝ HỘP QUÀ =====
+        function openGift() {
+            const container = document.querySelector('.gift-container');
+            container.classList.toggle('open');
+            
+            // Nếu mở quà thì bắn pháo hoa
+            if (container.classList.contains('open')) {
+                // Tạo chùm pháo hoa ngay giữa màn hình
+                for(let i=0; i<5; i++) {
+                    setTimeout(() => {
+                        createFirework(window.innerWidth / 2 + (Math.random()*100 - 50), window.innerHeight / 2 + (Math.random()*100 - 50));
+                    }, i * 300);
+                }
+            }
+        }
+
         // ===== SAO NỀN =====
         function createStars() {
             const starsContainer = document.getElementById('starsContainer');
@@ -276,7 +430,6 @@
         
         if(bgMusic) bgMusic.volume = 0.5;
 
-        // BẤT KỲ CÚ CLICK NÀO LÊN TRANG CŨNG SẼ BẬT NHẠC
         document.body.addEventListener('click', function() {
             if(bgMusic.paused) { 
                 bgMusic.play().then(() => {
@@ -286,7 +439,7 @@
         });
 
         musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Ngăn chặn sự kiện click body ở trên
+            e.stopPropagation(); 
             if (!bgMusic) return; 
             if (bgMusic.paused) {
                 bgMusic.play().then(() => {
@@ -322,7 +475,7 @@
         }, 2000);
 
         document.addEventListener('click', (e) => {
-            if(e.target.closest('#musicBtn')) return;
+            if(e.target.closest('#musicBtn') || e.target.closest('.gift-container')) return; // Không bắn pháo hoa khi bấm nút nhạc hoặc hộp quà
             createFirework(e.clientX, e.clientY);
         });
 
