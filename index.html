@@ -16,6 +16,9 @@
             position: relative; 
         }
 
+        /* --- ẨN CHẤM VÀNG LỖI --- */
+        .sparkle { display: none !important; }
+
         /* --- HIỆU ỨNG NỀN --- */
         .stars { position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .star-bg { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
@@ -36,21 +39,20 @@
             z-index: 5;
         }
 
-        /* --- CÂY THÔNG --- */
+        /* --- CÂY THÔNG SVG (CÓ RỄ) --- */
         svg.mainSVG { 
             width: 85vmin; 
             height: 85vmin; 
             max-width: 800px; 
             max-height: 800px;
-            margin-top: 10vh; 
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)); 
+            margin-top: 5vh; 
         }
-
-        .sparkle { filter: blur(1px); }
 
         /* --- CHỮ MERRY CHRISTMAS --- */
         .text {
             font-family: "Great Vibes", cursive;
-            font-size: clamp(30px, 10vw, 70px); 
+            font-size: clamp(35px, 10vw, 75px); 
             color: #fff;
             position: absolute;
             top: 10%; 
@@ -86,164 +88,59 @@
             to { opacity: 1; transform: scale(1) rotate(0deg); } 
         }
 
-        /* --- HỘP QUÀ BÍ MẬT (ĐÃ DI CHUYỂN RA GÓC TRÁI) --- */
+        /* --- HỘP QUÀ BÍ MẬT (GÓC TRÁI) --- */
         .gift-container {
             position: absolute;
-            bottom: 5%;  /* Sát đáy */
-            left: 5%;    /* Sát góc trái */
-            /* transform: translateX(-50%); <- Đã xóa dòng này */
+            bottom: 5%; 
+            left: 5%; 
             z-index: 30;
             cursor: pointer;
         }
 
-        .gift-box {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            animation: bounce 2s infinite; 
+        .gift-box { position: relative; width: 60px; height: 60px; animation: bounce 2s infinite; }
+        .gift-body { width: 60px; height: 50px; background-color: #d63031; border-radius: 0 0 5px 5px; position: absolute; bottom: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .gift-body::before { content: ''; position: absolute; width: 12px; height: 100%; background-color: #fdcb6e; left: 50%; transform: translateX(-50%); }
+        .gift-lid { width: 70px; height: 18px; background-color: #d63031; position: absolute; top: -8px; left: -5px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: all 0.5s ease; z-index: 2; }
+        .gift-lid::before { content: ''; position: absolute; width: 12px; height: 100%; background-color: #fdcb6e; left: 50%; transform: translateX(-50%); }
+        .click-me { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; white-space: nowrap; font-family: 'Dancing Script', cursive; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); animation: fadeText 1s infinite alternate; }
+        
+        .gift-message { 
+            position: absolute; bottom: 70px; left: 0; 
+            transform: scale(0); transform-origin: bottom left; 
+            background: rgba(255, 255, 255, 0.95); padding: 15px 20px; border-radius: 15px; 
+            color: #d63031; font-family: 'Great Vibes', cursive; font-size: 28px; text-align: center; 
+            width: max-content; min-width: 200px; 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); 
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); opacity: 0; pointer-events: none; border: 2px solid #fdcb6e; 
         }
 
-        .gift-body {
-            width: 60px;
-            height: 50px;
-            background-color: #d63031; 
-            border-radius: 0 0 5px 5px;
-            position: absolute;
-            bottom: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
+        .gift-container.open .gift-lid { transform: translateY(-60px) rotate(-20deg); opacity: 0; }
+        .gift-container.open .gift-message { transform: scale(1); opacity: 1; pointer-events: auto; }
+        .gift-container.open .gift-box { animation: none; }
+        .gift-container.open .click-me { display: none; }
 
-        .gift-body::before { 
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 100%;
-            background-color: #fdcb6e; 
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .gift-lid {
-            width: 70px;
-            height: 18px;
-            background-color: #d63031;
-            position: absolute;
-            top: -8px;
-            left: -5px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: all 0.5s ease;
-            z-index: 2;
-        }
-
-        .gift-lid::before { 
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 100%;
-            background-color: #fdcb6e;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* Dòng chữ "Tặng em!" */
-        .click-me {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-size: 14px;
-            white-space: nowrap;
-            font-family: 'Dancing Script', cursive;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            animation: fadeText 1s infinite alternate;
-        }
-
-        /* Lời chúc ẩn bên trong */
-        .gift-message {
-            position: absolute;
-            bottom: 70px; 
-            left: 0; /* Căn trái cho thông điệp */
-            /* transform: translateX(-50%) scale(0); <- Đã sửa */
-            transform: scale(0);
-            transform-origin: bottom left; /* Mở từ góc dưới trái */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px;
-            border-radius: 15px;
-            color: #d63031;
-            font-family: 'Great Vibes', cursive;
-            font-size: 28px;
-            text-align: center;
-            width: max-content;
-            min-width: 200px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
-            opacity: 0;
-            pointer-events: none;
-            border: 2px solid #fdcb6e;
-        }
-
-        /* --- TRẠNG THÁI KHI MỞ QUÀ --- */
-        .gift-container.open .gift-lid {
-            transform: translateY(-60px) rotate(-20deg); 
-            opacity: 0;
-        }
-
-        .gift-container.open .gift-message {
-            /* transform: translateX(-50%) scale(1); <- Đã sửa */
-            transform: scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .gift-container.open .gift-box {
-            animation: none; 
-        }
-
-        .gift-container.open .click-me {
-            display: none; 
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes fadeText { from { opacity: 0.6; transform: translateX(-50%) translateY(0); } to { opacity: 1; transform: translateX(-50%) translateY(-5px); } }
-
 
         /* --- NÚT NHẠC --- */
         .music-control { 
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            width: 50px; 
-            height: 50px; 
-            background: rgba(255,255,255,0.15); 
-            border: 1px solid rgba(255,255,255,0.3); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            backdrop-filter: blur(5px); 
-            z-index: 100; 
-            animation: pulse 2s infinite; 
+            position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; 
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; 
+            backdrop-filter: blur(5px); z-index: 100; animation: pulse 2s infinite; 
         }
         @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.7); } 50% { box-shadow: 0 0 0 10px rgba(255,215,0,0); } }
         .music-icon { font-size: 20px; }
 
         /* --- PHÁO HOA --- */
         .firework { position: absolute; width: 4px; height: 4px; border-radius: 50%; pointer-events: none; z-index: 99; }
-
     </style>
 </head>
 <body>
     <div class="stars" id="starsContainer"></div>
 
     <div class="music-control" id="musicBtn" title="Bật/Tắt Nhạc">
-        <span class="music-icon">🎵</span>
+        <span class="music-icon">🔇</span>
     </div>
 
     <audio id="bgMusic" loop>
@@ -307,9 +204,7 @@
             const container = document.querySelector('.gift-container');
             container.classList.toggle('open');
             
-            // Nếu mở quà thì bắn pháo hoa
             if (container.classList.contains('open')) {
-                // Tạo chùm pháo hoa ngay giữa màn hình
                 for(let i=0; i<5; i++) {
                     setTimeout(() => {
                         createFirework(window.innerWidth / 2 + (Math.random()*100 - 50), window.innerHeight / 2 + (Math.random()*100 - 50));
@@ -317,6 +212,35 @@
                 }
             }
         }
+
+        // ===== XỬ LÝ NÚT NHẠC (BẬT/TẮT) =====
+        const musicBtn = document.getElementById('musicBtn');
+        const bgMusic = document.getElementById('bgMusic');
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (!bgMusic) return;
+            
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
+            } else {
+                bgMusic.pause();
+                musicBtn.innerHTML = '<span class="music-icon">🔇</span>';
+            }
+        });
+
+        // TỰ ĐỘNG THỬ PHÁT NHẠC (Chỉ chạy được nếu trình duyệt cho phép)
+        document.body.addEventListener('click', function() {
+            if(bgMusic.paused && musicBtn.innerHTML.includes('mute')) { 
+                bgMusic.play().then(() => {
+                    musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
+                }).catch(e => {
+                    console.log("Cần click trực tiếp nút loa.");
+                });
+            }
+        }, { once: true });
+
 
         // ===== SAO NỀN =====
         function createStars() {
@@ -346,110 +270,45 @@
             setTimeout(() => snowflake.remove(), duration * 1000);
         }
 
-        // ===== GSAP ANIMATION =====
+        // ===== GSAP ANIMATION (VẼ CÂY THÔNG) =====
         MorphSVGPlugin.convertToPath('polygon');
         const select = s => document.querySelector(s);
         const pContainer = select('.pContainer');
         const mainSVG = select('.mainSVG');
-        const sparkle = select('.sparkle');
-        let showParticle = true;
-        const particleColorArray = ['#FFD700', '#FF6B6B', '#4ECDC4', '#FFF', '#F7DC6F', '#BB8FCE', '#85C1E9'];
-        const particleTypeArray = ['#star', '#circ', '#cross', '#heart'];
-        const particlePool = [];
-        let particleCount = 0;
-        const numParticles = 201;
-
-        gsap.set('svg', { visibility: 'visible' });
-        gsap.set(sparkle, { transformOrigin: '50% 50%', y: -100 });
-
-        function getSVGPoints(path) {
-            const arr = [];
-            const rawPath = MotionPathPlugin.getRawPath(path)[0];
-            rawPath.forEach((el, value) => {
-                const obj = { x: rawPath[value * 2], y: rawPath[(value * 2) + 1] };
-                if (value % 2) arr.push(obj);
-            });
-            return arr;
-        }
-
-        const treePath = getSVGPoints('.treePath');
-        const treeBottomPath = getSVGPoints('.treeBottomPath');
+        
+        // --- CHÚ Ý: ĐÃ ẨN SPARKLE BẰNG CSS ĐỂ TRÁNH LỖI CHẤM VÀNG ---
+        
+        const treePath = document.querySelector('.treePath');
+        const treeBottomPath = document.querySelector('.treeBottomPath');
         const mainTl = gsap.timeline({ delay: 0, repeat: 0 });
 
-        function flicker(p) {
-            gsap.killTweensOf(p, { opacity: true });
-            gsap.fromTo(p, { opacity: 1 }, { duration: 0.07, opacity: Math.random(), repeat: -1 });
-        }
+        // VẼ NGÔI SAO
+        const starTl = gsap.timeline();
+        starTl.from('.treeStarOutline', {
+            duration: 2,
+            opacity: 0,
+            scale: 0,
+            transformOrigin: "50% 50%",
+            ease: "elastic(1, 0.5)"
+        });
 
-        function createParticles() {
-            let i = numParticles;
-            while (--i > -1) {
-                const p = select(particleTypeArray[i % particleTypeArray.length]).cloneNode(true);
-                mainSVG.appendChild(p);
-                p.setAttribute('fill', particleColorArray[i % particleColorArray.length]);
-                p.setAttribute('class', "particle");
-                particlePool.push(p);
-                gsap.set(p, { x: -100, y: -100, transformOrigin: '50% 50%' });
-            }
-        }
+        // HIỆU ỨNG VẼ ĐƯỜNG CÂY THÔNG
+        mainTl.from(['.treePathMask', '.treePotMask'], {
+            duration: 6,
+            drawSVG: '0% 0%',
+            stroke: '#FFF',
+            stagger: { each: 6 },
+            ease: 'linear'
+        })
+        .from('.treeBottomMask', {
+            duration: 3,
+            drawSVG: '0% 0%',
+            stroke: '#FFF',
+            ease: 'linear'
+        }, "-=4")
+        .add(starTl); // Thêm sao vào cuối cùng
 
-        const getScale = gsap.utils.random(0.5, 3, 0.001, true);
-
-        function playParticle() {
-            if (!showParticle) return;
-            const p = particlePool[particleCount];
-            gsap.set(p, { x: gsap.getProperty('.pContainer', 'x'), y: gsap.getProperty('.pContainer', 'y'), scale: getScale() });
-            const tl = gsap.timeline();
-            tl.to(p, { duration: gsap.utils.random(0.61, 6), x: `+=${gsap.utils.random(-200, 200)}`, y: `+=${gsap.utils.random(50, 400)}`, scale: 0, rotation: gsap.utils.random(-360, 360), ease: 'power2.out', onStart: flicker, onStartParams: [p] });
-            particleCount++;
-            particleCount = (particleCount >= numParticles) ? 0 : particleCount;
-        }
-
-        function drawStar() {
-            const starTl = gsap.timeline({ onUpdate: playParticle });
-            starTl.to('.pContainer, .sparkle', { duration: 6, motionPath: { path: '.treePath', autoRotate: false }, ease: 'linear' })
-            .to('.pContainer, .sparkle', { duration: 1, onStart: () => { showParticle = false; }, x: treeBottomPath[0].x, y: treeBottomPath[0].y })
-            .to('.pContainer, .sparkle', { duration: 2, onStart: () => { showParticle = true; }, motionPath: { path: '.treeBottomPath', autoRotate: false }, ease: 'linear' }, '-=0')
-            .from('.treeBottomMask', { duration: 2, drawSVG: '0% 0%', stroke: '#FFF', ease: 'linear' }, '-=2');
-            return starTl;
-        }
-
-        createParticles();
-        const starTl = drawStar();
-
-        mainTl.from(['.treePathMask', '.treePotMask'], { duration: 6, drawSVG: '0% 0%', stroke: '#FFF', stagger: { each: 6 }, ease: 'linear' })
-        .from('.treeStar', { duration: 3, scaleY: 0, scaleX: 0.15, transformOrigin: '50% 50%', ease: 'elastic(1,0.5)' }, '-=4')
-        .to('.sparkle', { duration: 3, opacity: 0, ease: "rough({strength: 2, points: 100, template: linear, taper: both, randomize: true, clamp: false})" }, '-=0')
-        .to('.treeStarOutline', { duration: 1, opacity: 1, ease: "rough({strength: 2, points: 16, template: linear, taper: none, randomize: true, clamp: false})" }, '+=1');
-        mainTl.add(starTl, 0);
         gsap.globalTimeline.timeScale(1.5);
-
-        // ===== XỬ LÝ NHẠC ONLINE =====
-        const musicBtn = document.getElementById('musicBtn');
-        const bgMusic = document.getElementById('bgMusic'); 
-        
-        if(bgMusic) bgMusic.volume = 0.5;
-
-        document.body.addEventListener('click', function() {
-            if(bgMusic.paused) { 
-                bgMusic.play().then(() => {
-                    musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
-                }).catch(e => console.log("Chờ tương tác người dùng..."));
-            }
-        });
-
-        musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            if (!bgMusic) return; 
-            if (bgMusic.paused) {
-                bgMusic.play().then(() => {
-                    musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
-                });
-            } else {
-                bgMusic.pause();
-                musicBtn.innerHTML = '<span class="music-icon">🔇</span>';
-            }
-        });
 
         // ===== PHÁO HOA =====
         function createFirework(x, y) {
@@ -475,7 +334,7 @@
         }, 2000);
 
         document.addEventListener('click', (e) => {
-            if(e.target.closest('#musicBtn') || e.target.closest('.gift-container')) return; // Không bắn pháo hoa khi bấm nút nhạc hoặc hộp quà
+            if(e.target.closest('#musicBtn') || e.target.closest('.gift-container')) return; 
             createFirework(e.clientX, e.clientY);
         });
 
