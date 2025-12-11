@@ -24,7 +24,7 @@
         .snowflake { position: absolute; top: -10px; color: white; font-size: 15px; opacity: 0.9; user-select: none; pointer-events: none; animation: fall linear infinite; text-shadow: 0 0 10px rgba(255,255,255,0.8); z-index: 2; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(105vh) rotate(360deg); } }
 
-        /* --- CONTAINER CHÍNH (CĂN GIỮA MỌI THỨ) --- */
+        /* --- CONTAINER CHÍNH --- */
         .main-container { 
             position: relative; 
             width: 100%; 
@@ -36,14 +36,13 @@
             z-index: 5;
         }
 
-        /* --- CÂY THÔNG (Dùng vmin để chuẩn mọi màn hình) --- */
+        /* --- CÂY THÔNG (Đã bỏ hiệu ứng bóng vàng) --- */
         svg.mainSVG { 
-            width: 85vmin; /* Chiếm 85% cạnh nhỏ nhất của màn hình */
+            width: 85vmin; 
             height: 85vmin; 
             max-width: 800px; 
             max-height: 800px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)); 
-            /* Đẩy xuống một chút để nhường chỗ cho chữ */
+            /* filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));  <- ĐÃ BỎ DÒNG NÀY */
             margin-top: 10vh; 
         }
 
@@ -52,11 +51,10 @@
         /* --- CHỮ MERRY CHRISTMAS --- */
         .text {
             font-family: "Great Vibes", cursive;
-            /* Chữ tự co giãn theo chiều rộng màn hình */
             font-size: clamp(30px, 10vw, 70px); 
             color: #fff;
             position: absolute;
-            top: 10%; /* Cách đỉnh màn hình 10% */
+            top: 10%; 
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -64,29 +62,30 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,215,0,0.4);
             z-index: 10;
             animation: fadeInGlow 2s forwards;
-            animation-delay: 4s; /* Hiện ra sau khi cây vẽ xong 1 chút */
+            animation-delay: 4s; 
             white-space: nowrap;
             width: 100%;
         }
         @keyframes fadeInGlow { from { opacity: 0; transform: translateX(-50%) scale(0.8); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
 
-        /* --- ÔNG GIÀ NOEL --- */
+        /* --- ÔNG GIÀ NOEL (Dùng thẻ IMG) --- */
         .santa-claus { 
-            animation: santaAppear 2s forwards; 
-            animation-delay: 7s; 
             position: absolute; 
             bottom: 5%; 
             right: 5%; 
-            opacity: 0; 
-            /* Kích thước dựa trên vmin để không quá to trên điện thoại */
-            width: 25vmin; 
-            height: 25vmin;
-            min-width: 120px; /* Không nhỏ quá mức */
-            min-height: 120px;
+            width: 30vmin; 
+            height: auto; 
+            min-width: 140px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); 
             z-index: 20;
+            animation: santaAppear 2s forwards; 
+            animation-delay: 7s; 
+            opacity: 0; 
         }
-        @keyframes santaAppear { from { opacity: 0; transform: scale(0) rotate(-20deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+        @keyframes santaAppear { 
+            from { opacity: 0; transform: scale(0) rotate(-20deg); } 
+            to { opacity: 1; transform: scale(1) rotate(0deg); } 
+        }
 
         /* --- NÚT NHẠC --- */
         .music-control { 
@@ -155,7 +154,7 @@
 
         <h1 class="text">Merry Christmas! 🎄</h1>
 
-        <dotlottie-player class="santa-claus" src="https://lottie.host/6d0dfa5c-028c-4847-8389-06304eb1b01e/5TtJvD6xoM.json" background="transparent" speed="1" loop autoplay></dotlottie-player>
+        <img class="santa-claus" src="https://media.giphy.com/media/yHZXogzGqe4sJjF65p/giphy.gif" alt="Ông già Noel cưỡi xe">
     </div>
 
     <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
@@ -163,7 +162,6 @@
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin3.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MotionPathPlugin.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/EasePack3.min.js"></script>
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
     <script>
         // ===== SAO NỀN =====
@@ -272,26 +270,27 @@
         mainTl.add(starTl, 0);
         gsap.globalTimeline.timeScale(1.5);
 
-        // ===== XỬ LÝ NHẠC ONLINE (Tương tác màn hình trước khi phát) =====
+        // ===== XỬ LÝ NHẠC ONLINE =====
         const musicBtn = document.getElementById('musicBtn');
         const bgMusic = document.getElementById('bgMusic'); 
         
         if(bgMusic) bgMusic.volume = 0.5;
 
-        // Tự động thử phát nhạc khi chạm vào màn hình lần đầu (Do trình duyệt điện thoại chặn tự phát)
+        // BẤT KỲ CÚ CLICK NÀO LÊN TRANG CŨNG SẼ BẬT NHẠC
         document.body.addEventListener('click', function() {
-            if(bgMusic.paused && musicBtn.innerHTML.includes('mute')) { 
-                // Logic chờ người dùng bật
+            if(bgMusic.paused) { 
+                bgMusic.play().then(() => {
+                    musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
+                }).catch(e => console.log("Chờ tương tác người dùng..."));
             }
-        }, { once: true });
+        });
 
-        musicBtn.addEventListener('click', () => {
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Ngăn chặn sự kiện click body ở trên
             if (!bgMusic) return; 
             if (bgMusic.paused) {
                 bgMusic.play().then(() => {
                     musicBtn.innerHTML = '<span class="music-icon">🔊</span>';
-                }).catch(e => {
-                    alert("Hãy chạm vào màn hình để cho phép phát nhạc!");
                 });
             } else {
                 bgMusic.pause();
@@ -302,7 +301,7 @@
         // ===== PHÁO HOA =====
         function createFirework(x, y) {
             const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#F7DC6F', '#BB8FCE'];
-            const numParticles = 20; // Giảm số lượng hạt trên mobile cho đỡ lag
+            const numParticles = 20; 
             for (let i = 0; i < numParticles; i++) {
                 const firework = document.createElement('div');
                 firework.className = 'firework';
